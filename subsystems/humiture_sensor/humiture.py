@@ -15,22 +15,22 @@ ITERATIONS = 30
 
 def initialize_sensor(pin):
     """Initializes the DHT sensor."""
-    return adafruit_dht.DHT11(pin)
+    sensor = adafruit_dht.DHT11(pin)
+    return sensor
 
 def read_sensor_data(sensor):
     """Reads temperature and humidity from the sensor."""
-    try:
-        temperature_c = sensor.temperature
-        temperature_f = temperature_c * (9 / 5) + 32
-        humidity = sensor.humidity
-        return temperature_c, temperature_f, humidity
-    except RuntimeError as error:
-        print(f"Error reading sensor: {error.args[0]}")
-        return None, None, None  # Return None values to indicate failure
-    except Exception as error:
-        sensor.exit()
-        raise error
-
+    retries = 3  # Number of retries to get a valid reading
+    for _ in range(retries):
+        try:
+            temperature_c = sensor.temperature
+            temperature_f = temperature_c * (9 / 5) + 32
+            humidity = sensor.humidity
+            return temperature_c, temperature_f, humidity
+        except RuntimeError as error:
+            print(f"Error reading sensor: {error.args[0]}")
+            time.sleep(0.1)  # Small delay to allow the sensor time to recover
+    return None, None, None  # Return None after retries fail
 
 def create_dataframe(data):
     """Creates a Pandas DataFrame from the sensor data."""
@@ -43,7 +43,6 @@ def append_to_csv(df, file_path):
 
 def main():
     """Main function to collect data and write to CSV."""
-
     sensor = initialize_sensor(DHT_PIN)
     df = pd.DataFrame(columns=["Humidity", "Temperature"])  # Initialize outside the loop
 
@@ -57,10 +56,10 @@ def main():
             df = pd.concat([df, create_dataframe(new_entry)], ignore_index=True)
 
             # Append to CSV after each reading (more robust)
-            append_to_csv(df.tail(1), CSV_FILE_PATH) # Append only the last row for efficiency
-            df = df.iloc[0:0] # Clear the df after appending to free up memory
+            append_to_csv(df.tail(1), CSV_FILE_PATH)  # Append only the last row for efficiency
+            df = df.iloc[0:0]  # Clear the df after appending to free up memory
 
-        time.sleep(0.5)
+        time.sleep(0.5)  # Sleep to avoid hammering the sensor with too many reads in a short period
 
 if __name__ == "__main__":
     main()

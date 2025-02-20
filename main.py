@@ -162,15 +162,15 @@ def generate():
     while True:
         ret, frame = cap.read()
         if not ret:
-            print("[ERROR] Frame not captured")
+           
             continue
 
-        frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+        
         
         _, buffer = cv2.imencode('.jpg', frame)
         
         frameNum += 1
-        print("[SUCCESS] Frame #" + str(frameNum) + " captured successfully")
+        
         
         yield (b'--frame\r\n'
                b'Content-Type: image/jpeg\r\n\r\n' + buffer.tobytes() + b'\r\n')

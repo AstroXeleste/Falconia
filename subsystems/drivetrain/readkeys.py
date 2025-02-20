@@ -1,6 +1,9 @@
 import curses
+from adafruit_motorkit import MotorKit
 
-def main(stdscr):
+kit = MotorKit()
+
+def keyboard_to_motor(stdscr):
     # Clear screen and set up for non-blocking input
     stdscr.clear()
     curses.curs_set(0)  # Hide the cursor
@@ -24,11 +27,19 @@ def main(stdscr):
             stdscr.addstr(0, 0, "You Pressed down!")
         elif key == curses.KEY_UP:
             stdscr.addstr(0, 0, "You Pressed up!")
+            kit.motor1.throttle=1.0
+            time.sleep(0.5)
+            kit.motor1.throttle(0) # TODO: Change this soon with new motor inputs
+        elif key == curses.KEY_BACKSPACE:
+            # ADD READING FUNCTIONALITY HERE
+            stdscr.addstr(0, 0, "You are reading")
         elif key == 27:  # Escape key to exit
             break
 
         stdscr.refresh()  # Refresh the screen to show updated text
         stdscr.clear()    # Clear the screen for the next update
 
+
 # Run the curses application
-curses.wrapper(main)
+if __name__ == "main":
+    curses.wrapper(keyboard_to_motor)

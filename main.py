@@ -145,6 +145,8 @@ ECHO = 18
 GPIO.setup(TRIG, GPIO.OUT)
 GPIO.setup(ECHO, GPIO.IN)
 
+
+
 # Initialize Flask app for video streaming
 app = Flask(__name__)
 

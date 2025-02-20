@@ -1,7 +1,33 @@
 import curses
 from adafruit_motorkit import MotorKit
+import time
+
+global MTR_1_FORWARD
+global MTR_2_FORWARD
+
+MTR_2_FORWARD = -1.0 # in negative direction because of reversed charges on motor
+MTR_2_FORWARD = 1.0
 
 kit = MotorKit()
+
+def forward():
+    kit.motor2.throttle = MTR_2_FORWARD
+    kit.motor1.throttle = MTR_1_FORWARD
+
+def backward():
+    kit.motor2.throttle = -MTR_2_FORWARD
+    kit.motor1.throttle = -MTR_1_FORWARD
+
+def left():
+    kit.motor2.throttle = 1.0
+
+def right():
+    kit.motor2.throttle = 1.0
+
+def stop():
+    kit.motor2.throttle = 0
+    kit.motor1.throttle = 0
+
 
 def keyboard_to_motor(stdscr):
     # Clear screen and set up for non-blocking input
@@ -25,11 +51,10 @@ def keyboard_to_motor(stdscr):
             stdscr.addstr(0, 0, "You Pressed right!")
         elif key == curses.KEY_DOWN:
             stdscr.addstr(0, 0, "You Pressed down!")
+            stop()
         elif key == curses.KEY_UP:
             stdscr.addstr(0, 0, "You Pressed up!")
-            kit.motor1.throttle=1.0
-            time.sleep(0.5)
-            kit.motor1.throttle(0) # TODO: Change this soon with new motor inputs
+            forward()
         elif key == curses.KEY_BACKSPACE:
             # ADD READING FUNCTIONALITY HERE
             stdscr.addstr(0, 0, "You are reading")
@@ -41,5 +66,6 @@ def keyboard_to_motor(stdscr):
 
 
 # Run the curses application
-if __name__ == "main":
-    curses.wrapper(keyboard_to_motor)
+while True:
+     kit.motor2.throttle = MTR_2_FORWARD
+     kit.motor1.throttle = MTR_2_FORWARD

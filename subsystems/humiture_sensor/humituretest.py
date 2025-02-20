@@ -5,7 +5,7 @@ import pandas as pd
 import os
 
 # Sensor data pin
-DHT_PIN = board.D5
+DHT_PIN = board.D4
 
 # CSV file path
 CSV_FILE_PATH = "/home/x3raspian/Falconia/data_management/data/humitureData.csv"

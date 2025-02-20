@@ -139,8 +139,8 @@ device_file = device_folder + '/w1_slave'
 
 GPIO.setmode(GPIO.BCM)
 
-TRIG = 17
-ECHO = 18
+TRIG = 23
+ECHO = 22
 
 GPIO.setup(TRIG, GPIO.OUT)
 GPIO.setup(ECHO, GPIO.IN)

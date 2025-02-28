@@ -1,64 +1,49 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Camera Feed</title>
+    <title>Falconia Control</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: sans-serif;
             text-align: center;
-            margin: 0;
-            padding: 0;
-            background-color: #f4f4f4;
-        }
-        .container {
-            width: 80%;
-            margin: 0 auto;
-            padding: 20px;
-            background-color: #fff;
-            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-        }
-        h1 {
-            color: #333;
         }
         img {
-            max-width: 100%;
+            max-width: 80%;
             height: auto;
             border: 1px solid #ccc;
+            margin-bottom: 20px;
         }
-        .button-container {
-            margin-top: 20px;
+        .div-container{
+            display: flex;
+            justify-content: center;
         }
-        button {
-            padding: 10px 20px;
-            font-size: 16px;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
+        .data-container {
+            border: 1px solid #eee;
+            padding: 20px;
+            margin: 20px auto;
+            width: fit-content;
+            text-align: left;
         }
-        button:hover {
-            background-color: #45a049;
+        .data-container p {
+            margin: 5px 0;
         }
     </style>
 </head>
 <body>
-
-    <div class="container">
-        <h1>Live Camera Feed</h1>
-        <div>
-            <!-- Displaying the camera feed -->
-            <img src="{{ url_for('video_feed') }}" alt="Camera Stream" />
-        </div>
-
-        <div class="button-container">
-            <button onclick="alert('This button can be used to control motor actions or other functionalities')">
-                Example Button
-            </button>
-        </div>
+    <h1>Falconia Control</h1>
+    <img src="{{ url_for('video_feed') }}">
+    <h2>Latest Sensor Data</h2>
+    <div class="data-container">
+        {% if latest_data %}
+            <p><strong>Timestamp:</strong> {{ latest_data['Timestamp'] }}</p>
+            <p><strong>Humiture Temperature (C):</strong> {{ latest_data['Humiture_Temp_C'] }}</p>
+            <p><strong>Humiture Humidity:</strong> {{ latest_data['Humiture_Humidity'] }}</p>
+            <p><strong>Temperature (C):</strong> {{ latest_data['Temperature_Temp_C'] }}</p>
+            <p><strong>Temperature (F):</strong> {{ latest_data['Temperature_Temp_F'] }}</p>
+            <p><strong>Ultrasonic Distance (CM):</strong> {{ latest_data['Ultrasonic_Distance_CM'] }}</p>
+        {% else %}
+            <p>No data available yet.</p>
+        {% endif %}
     </div>
-
 </body>
 </html>

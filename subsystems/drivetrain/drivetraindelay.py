@@ -7,22 +7,30 @@ kit = MotorKit()
 
 # Define motor speed (range: 0 to 1)
 DEFAULT_SPEED = -1
-
-def move_forward(speed=DEFAULT_SPEED):
+DEFAULT_TIME = 3.2
+def move_forward(speed=DEFAULT_SPEED, t=DEFAULT_TIME):
     kit.motor3.throttle = speed
     kit.motor4.throttle = speed
+    time.sleep(t)
+    stop()
 
-def move_backward(speed=DEFAULT_SPEED):
+def move_backward(speed=DEFAULT_SPEED, time=DEFAULT_TIME):
     kit.motor3.throttle = -speed
     kit.motor4.throttle = -speed
+    time.sleep(t)
+    stop()
 
-def turn_left(speed=DEFAULT_SPEED):
+def turn_left(speed=DEFAULT_SPEED, time=DEFAULT_TIME):
     kit.motor3.throttle = -speed
     kit.motor4.throttle = speed
+    time.sleep(t)
+    stop()
 
-def turn_right(speed=DEFAULT_SPEED):
+def turn_right(speed=DEFAULT_SPEED, time=DEFAULT_TIME):
     kit.motor3.throttle = speed
     kit.motor4.throttle = -speed
+    time.sleep(t)
+    stop()
 
 def stop():
     kit.motor3.throttle = 0
@@ -30,24 +38,24 @@ def stop():
 
 def keyboard_control(stdscr):
     stdscr.nodelay(1)  # Non-blocking input
-    stdscr.timeout(5000)  # Refresh every 100ms
+    stdscr.timeout(100)  # Refresh every 100ms
     stdscr.addstr(0, 0, "Use WASD to move, Q to quit.")
 
     while True:
         key = stdscr.getch()
 
         if key == ord('w'):  # Forward
-            move_forward()
             stdscr.addstr(1, 0, "Moving Forward  ")
+            move_forward()
         elif key == ord('s'):  # Backward
-            move_backward()
             stdscr.addstr(1, 0, "Moving Backward ")
+            move_backward()
         elif key == ord('a'):  # Left
-            turn_left()
             stdscr.addstr(1, 0, "Turning Left    ")
+            turn_left()
         elif key == ord('d'):  # Right
-            turn_right()
             stdscr.addstr(1, 0, "Turning Right   ")
+            turn_right()
         elif key == ord('q'):  # Quit
             stop()
             break

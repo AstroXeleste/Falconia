@@ -3,8 +3,8 @@ import time
 
 GPIO.setmode(GPIO.BCM)
 
-TRIG = 23
-ECHO = 22
+TRIG = 24
+ECHO = 27
 
 GPIO.setup(TRIG, GPIO.OUT)
 GPIO.setup(ECHO, GPIO.IN)

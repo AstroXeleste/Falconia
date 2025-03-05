@@ -139,8 +139,8 @@ device_file = device_folder + '/w1_slave'
 
 GPIO.setmode(GPIO.BCM)
 
-TRIG = 23
-ECHO = 22
+TRIG = 24
+ECHO = 27
 
 GPIO.setup(TRIG, GPIO.OUT)
 GPIO.setup(ECHO, GPIO.IN)
@@ -242,7 +242,6 @@ def main():
         
         # Read data from the DS18B20 temperature sensor
         temperature_temp_c, temperature_temp_f = read_temp()
-        ultrasonic_distance_cm = get_distance()
 
         if humiture_temp_c is not None:  # Check if humiture data was read successfully
             new_row = {
@@ -251,7 +250,7 @@ def main():
                 "Humiture_Humidity": humiture_humidity,
                 "Temperature_Temp_C": temperature_temp_c,
                 "Temperature_Temp_F": temperature_temp_f,
-                "Ultrasonic_Distance_CM": ultrasonic_distance_cm
+                "Ultrasonic_Distance_CM": 1000
             }
 
             print(new_row)
